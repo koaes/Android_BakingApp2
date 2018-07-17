@@ -13,7 +13,7 @@ public class Initial_Tablet_Fragement extends Fragment{
         /**
          * Inflate the layout for this fragment
          */
-        return inflater.inflate(R.layout.initial_tablet_layout, container, false);
+        return inflater.inflate(R.layout.activity_step_instruction, container, false);
     }
 
 }

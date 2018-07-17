@@ -2,13 +2,13 @@ package com.example.android.baking;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.example.android.baking.adapters.RecipeAdapter;
 import com.example.android.baking.model.Ingredients;
 import com.example.android.baking.model.Recipe;
 
