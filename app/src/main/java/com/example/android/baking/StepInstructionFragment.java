@@ -1,42 +1,39 @@
 package com.example.android.baking;
 
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-
-public class StepInstruction extends AppCompatActivity {
+public class StepInstructionFragment extends Fragment{
 
     private SimpleExoPlayer mExoPlayer;
     private PlayerView playerView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_step_instruction);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        playerView = (PlayerView) findViewById(R.id.playerView);
+        View view = inflater.inflate(R.layout.fragment_step_instruction, container, false);
 
+        playerView = (PlayerView) view.findViewById(R.id.playerView);
 
+        return view;
     }
-    
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -48,7 +45,7 @@ public class StepInstruction extends AppCompatActivity {
     private void initializePlayer() {
         if (mExoPlayer == null) {
             // Create an instance of the ExoPlayer.
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(this), new DefaultTrackSelector(), new DefaultLoadControl());
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), new DefaultTrackSelector(), new DefaultLoadControl());
             playerView.setPlayer(mExoPlayer);
 
             // Prepare the MediaSource.
@@ -58,5 +55,6 @@ public class StepInstruction extends AppCompatActivity {
             mExoPlayer.prepare(mediaSource, true, false);
         }
     }
+
 
 }

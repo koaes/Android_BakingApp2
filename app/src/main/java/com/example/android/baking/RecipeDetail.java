@@ -1,15 +1,10 @@
 package com.example.android.baking;
 
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import com.example.android.baking.adapters.IngredientAdapter;
-import com.example.android.baking.adapters.StepsAdapter;
-import com.example.android.baking.model.Ingredients;
 import com.example.android.baking.model.Recipe;
 import com.example.android.baking.model.Steps;
 
@@ -18,6 +13,7 @@ import java.util.ArrayList;
 public class RecipeDetail extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,72 +22,51 @@ public class RecipeDetail extends AppCompatActivity {
         if(getResources().getBoolean(R.bool.isTab)) {
             setContentView(R.layout.activity_recipe_detail);
 
-            //FragmentManager fragmentManager = getFragmentManager();
-            //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-            //Initial_Mobile_Fragement ls_fragment = new Initial_Mobile_Fragement();
-            //fragmentTransaction.replace(android.R.id.content, ls_fragment);
 
         } else {
-            setContentView(R.layout.activity_recipe_detail_mobile);
+            setContentView(R.layout.activity_recipe_detail);
         }
-
 
         final Recipe currentRecipe = getIntent().getParcelableExtra("Recipe");
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Ingredient"));
+        tabLayout.addTab(tabLayout.newTab().setText("Steps"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), currentRecipe);
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        ArrayList<Ingredients> ingredientList = currentRecipe.getIngredients();
-        for (int j = 0; j < ingredientList.size(); j++) {
-            //Log.v(TAG, "Ingredient: " + ingredientList.get(j).getIngredient() + "\n" +
-            //        "Quantity: " + ingredientList.get(j).getQuantity() + "\n" +
-            //        "Measure: " + ingredientList.get(j).getMeasure() + "\n"
-            //);
-        }
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         ArrayList<Steps> stepsList = currentRecipe.getSteps();
         for (int j = 0; j < stepsList.size(); j++) {
-            Log.v(TAG, "Description: " + stepsList.get(j).getDescription() + "\n" +
-                    "Short: " + stepsList.get(j).getShortDescription() + "\n" +
-                    "Video: " + stepsList.get(j).getVideoURL() + "\n" +
-                    "Thumbnail: " + stepsList.get(j).getThumbnailURL() + "\n"
-            );
+            //Log.v(TAG, "Description: " + stepsList.get(j).getDescription() + "\n" +
+                    //"Short: " + stepsList.get(j).getShortDescription() + "\n" +
+                   // "Video: " + stepsList.get(j).getVideoURL() + "\n" +
+                    //"Thumbnail: " + stepsList.get(j).getThumbnailURL() + "\n"
+            //);
         }
-
-
-
-
-
-        RecyclerView mRecyclerView = findViewById(R.id.ingredient_recycler);
-        mRecyclerView.setHasFixedSize(true);
-
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(RecipeDetail.this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        DividerItemDecoration itemDecor = new DividerItemDecoration(RecipeDetail.this, mLayoutManager.getOrientation());
-        mRecyclerView.addItemDecoration(itemDecor);
-
-        IngredientAdapter mAdapter = new IngredientAdapter(RecipeDetail.this,ingredientList);
-        mRecyclerView.setAdapter(mAdapter);
-
-
-
-        RecyclerView mStepRecyclerView = findViewById(R.id.steps_recycler);
-        mRecyclerView.setHasFixedSize(true);
-
-        LinearLayoutManager mstepLayoutManager = new LinearLayoutManager(RecipeDetail.this);
-        mStepRecyclerView.setLayoutManager(mstepLayoutManager);
-
-        DividerItemDecoration itemDecor2 = new DividerItemDecoration(RecipeDetail.this, mstepLayoutManager.getOrientation());
-        mStepRecyclerView.addItemDecoration(itemDecor2);
-
-        StepsAdapter mStepAdapter = new StepsAdapter(RecipeDetail.this,stepsList);
-        mStepRecyclerView.setAdapter(mStepAdapter);
 
 
 
     }
-
-
-
 
 }
