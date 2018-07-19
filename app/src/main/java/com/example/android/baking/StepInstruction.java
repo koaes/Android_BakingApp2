@@ -3,7 +3,11 @@ package com.example.android.baking;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
+import com.example.android.baking.model.Recipe;
+import com.example.android.baking.model.Steps;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -26,6 +30,7 @@ public class StepInstruction extends AppCompatActivity {
 
     private SimpleExoPlayer mExoPlayer;
     private PlayerView playerView;
+    Steps current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +39,12 @@ public class StepInstruction extends AppCompatActivity {
 
         playerView = (PlayerView) findViewById(R.id.playerView);
 
+        current = getIntent().getParcelableExtra("Package");
+
+        Log.v("==========", current.toString());
 
     }
-    
+
     @Override
     public void onStart() {
         super.onStart();
@@ -52,7 +60,9 @@ public class StepInstruction extends AppCompatActivity {
             playerView.setPlayer(mExoPlayer);
 
             // Prepare the MediaSource.
-            Uri uri = Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd9a6_2-mix-sugar-crackers-creampie/2-mix-sugar-crackers-creampie.mp4");
+            Uri uri = Uri.parse(current.getVideoURL());
+            TextView instructions = findViewById(R.id.instructions);
+            instructions.setText(current.getDescription());
             mExoPlayer.setPlayWhenReady(true);
             MediaSource mediaSource = new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("exoplayer-codelab")).createMediaSource(uri);
             mExoPlayer.prepare(mediaSource, true, false);

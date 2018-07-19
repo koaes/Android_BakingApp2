@@ -33,10 +33,12 @@ public class IngredientFragment extends Fragment {
         Bundle bundle = getArguments();
         Log.v("Bundle", bundle.toString());
         if (bundle != null){
+
             final Recipe currentRecipe = bundle.getParcelable("Recipe");
             ArrayList<Ingredients> ingredientList = currentRecipe.getIngredients();
+
             for (int j = 0; j < ingredientList.size(); j++) {
-                Log.v("Frag", ingredientList.get(j).getQuantity() + " " + ingredientList.get(j).getMeasure() + " " + ingredientList.get(j).getIngredient());
+                //Log.v("Frag", ingredientList.get(j).getQuantity() + " " + ingredientList.get(j).getMeasure() + " " + ingredientList.get(j).getIngredient());
                 String ingredientRow = ingredientList.get(j).getQuantity() + " " + ingredientList.get(j).getMeasure() + " " + ingredientList.get(j).getIngredient();
                 ingredientArray.add(ingredientRow);
             }

@@ -56,17 +56,6 @@ public class RecipeDetail extends AppCompatActivity {
             }
         });
 
-        ArrayList<Steps> stepsList = currentRecipe.getSteps();
-        for (int j = 0; j < stepsList.size(); j++) {
-            //Log.v(TAG, "Description: " + stepsList.get(j).getDescription() + "\n" +
-                    //"Short: " + stepsList.get(j).getShortDescription() + "\n" +
-                   // "Video: " + stepsList.get(j).getVideoURL() + "\n" +
-                    //"Thumbnail: " + stepsList.get(j).getThumbnailURL() + "\n"
-            //);
-        }
-
-
-
     }
 
 }

@@ -29,6 +29,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 return tab1;
             case 1:
                 StepFragment tab2 = new StepFragment();
+                Bundle bundle2 = new Bundle();
+                bundle2.putParcelable("Recipe", currentRecipe);
+                tab2.setArguments(bundle2);
                 return tab2;
             default:
                 return null;

@@ -3,6 +3,7 @@ package com.example.android.baking.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,8 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
 
         public ViewHolder (View v){
             super(v);
-            mshortDesc = v.findViewById(R.id.step);
+            this.mshortDesc = (TextView) v.findViewById(R.id.step);
+
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -52,10 +54,12 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(StepsAdapter.ViewHolder holder, int position) {
+        Log.v("Recycler", Integer.toString(position));
         holder.mshortDesc.setText(mDataset.get(position).getShortDescription());
     }
 
     public int getItemCount() {
+
         return mDataset.size();
     }
 }
