@@ -21,27 +21,32 @@
             android:layout_marginRight="16dp"
             android:src="@drawable/chickendinner_640x480"
             tools:layout_height="75sp"
-            tools:layout_width="75sp"
-
-            />
+            tools:layout_width="75sp"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/cardViewTitle"
             android:id="@+id/item_name"
             android:layout_toRightOf="@+id/item_photo"
             android:layout_alignParentTop="true"
-            android:textSize="30sp"
-            android:text="First Ingredient"
+            tools:text="Recipe Name"
+
             />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/person_age"
+            style="@style/cardView"
+            android:id="@+id/servingNumber"
             android:layout_toRightOf="@+id/item_photo"
             android:layout_below="@+id/item_name"
-            android:text="Second Stuff"
+            android:text="@string/servingNumber"
+
+            />
+
+        <TextView
+            style="@style/cardView"
+            android:id="@+id/servings"
+            android:layout_toRightOf="@+id/servingNumber"
+            android:layout_below="@+id/item_name"
+            tools:text="8"
             />
 
     </RelativeLayout>

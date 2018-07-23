@@ -1,61 +1,122 @@
 package com.example.android.baking;
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
+import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.android.baking.model.Recipe;
 import com.example.android.baking.model.Steps;
 
-import java.util.ArrayList;
+public class RecipeDetail extends AppCompatActivity implements StepFragment.Communicator{
 
-public class RecipeDetail extends AppCompatActivity {
-
-    private static final String TAG = "MainActivity";
-    private ViewPager viewPager;
+    RecipeDetailFragment recipeDetailFragment;
+    StepInstructionFragment stepInstructionFragment;
+    android.support.v4.app.FragmentManager manager;
+    StepFragment stepFragment;
+    StepInstructionFragment sIF;
+    RecipeDetailFragment rIF;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(getResources().getBoolean(R.bool.isTab)) {
-            setContentView(R.layout.activity_recipe_detail);
-
-
-        } else {
-            setContentView(R.layout.activity_recipe_detail);
-        }
+        setContentView(R.layout.activity_recipe_detail);
 
         final Recipe currentRecipe = getIntent().getParcelableExtra("Recipe");
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Ingredient"));
-        tabLayout.addTab(tabLayout.newTab().setText("Steps"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), currentRecipe);
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("Recipe", currentRecipe);
+        recipeDetailFragment.setArguments(bundle);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
 
-                viewPager.setCurrentItem(tab.getPosition());
-            }
+        manager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = manager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, recipeDetailFragment, "Detail");
+        Log.v("Master", "Adding RecipeDetailFragment");
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            StepInstructionFragment stepInstructionFragment = new StepInstructionFragment();
+            fragmentTransaction.add(R.id.stepInstruction_fragment_container, stepInstructionFragment, "Instruct");
 
-            }
+        }
+        fragmentTransaction.commit();
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+        //sF.setCommunicator(this);
 
-            }
-        });
 
     }
+
+    @Override
+    public void respond(Steps currentSteps) {
+
+        Log.v("currentSteps",currentSteps.toString());
+
+        if((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)) {
+            StepInstructionFragment newFragment = new StepInstructionFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("Package", currentSteps);
+            newFragment.setArguments(bundle);
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            transaction.replace(R.id.stepInstruction_fragment_container, newFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }else{
+            Intent intent = new Intent(this, StepInstruction.class);
+            intent.putExtra("Package",currentSteps);
+            startActivity(intent);
+        }
+
+    }
+
+    /*@Override
+    public void respond(View view, Steps currentSteps) {
+
+
+        //if((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)){
+
+            //Bundle bundle = new Bundle();
+            //Log.v("currentSteps",currentSteps.toString());
+            //bundle.putParcelable("Steps", currentSteps);
+            //StepInstructionFragment stepInstructionFragment = new StepInstructionFragment();
+            //stepInstructionFragment.setArguments(bundle);
+
+
+
+
+                FragmentManager fm = getSupportFragmentManager();
+
+                if (fm == null) {
+                    Toast.makeText(this, "No Fragment Manager", Toast.LENGTH_SHORT).show();
+                }
+
+                Fragment sv = fm.findFragmentByTag("Instruct");
+        if (sv == null) {
+            Toast.makeText(this, "No Fragment Here", Toast.LENGTH_SHORT).show();
+        }
+
+                //fm.beginTransaction()
+                       // .replace(R.id.stepInstruction_fragment_container, stepInstructionFragment).commit();
+
+
+
+
+        //} else {
+        //    Intent intent = new Intent(context, StepInstruction.class);
+        //    intent.putExtra("Package",currentSteps);
+            //context.startActivity(intent);
+        //}
+
+    }
+    */
 
 }

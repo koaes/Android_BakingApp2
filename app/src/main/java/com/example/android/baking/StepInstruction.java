@@ -28,8 +28,7 @@ import com.google.android.exoplayer2.util.Util;
 
 public class StepInstruction extends AppCompatActivity {
 
-    private SimpleExoPlayer mExoPlayer;
-    private PlayerView playerView;
+    android.support.v4.app.FragmentManager manager;
     Steps current;
 
     @Override
@@ -37,36 +36,19 @@ public class StepInstruction extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_instruction);
 
-        playerView = (PlayerView) findViewById(R.id.playerView);
-
         current = getIntent().getParcelableExtra("Package");
 
-        Log.v("==========", current.toString());
+        StepInstructionFragment stepInstructionFragment = new StepInstructionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("Package", current);
+        stepInstructionFragment.setArguments(bundle);
+
+        manager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = manager.beginTransaction();
+        fragmentTransaction.add(R.id.stepInstruction_fragment_container, stepInstructionFragment);
+        fragmentTransaction.commit();
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (Util.SDK_INT > 23) {
-            initializePlayer();
-        }
-    }
-
-    private void initializePlayer() {
-        if (mExoPlayer == null) {
-            // Create an instance of the ExoPlayer.
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(this), new DefaultTrackSelector(), new DefaultLoadControl());
-            playerView.setPlayer(mExoPlayer);
-
-            // Prepare the MediaSource.
-            Uri uri = Uri.parse(current.getVideoURL());
-            TextView instructions = findViewById(R.id.instructions);
-            instructions.setText(current.getDescription());
-            mExoPlayer.setPlayWhenReady(true);
-            MediaSource mediaSource = new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("exoplayer-codelab")).createMediaSource(uri);
-            mExoPlayer.prepare(mediaSource, true, false);
-        }
-    }
 
 }

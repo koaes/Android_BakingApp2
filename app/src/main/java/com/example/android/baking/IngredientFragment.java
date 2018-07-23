@@ -26,14 +26,12 @@ public class IngredientFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_ingredient, container, false);
-
         list = view.findViewById(R.id.ingredientlistview);
 
-
         Bundle bundle = getArguments();
-        Log.v("Bundle", bundle.toString());
-        if (bundle != null){
+        //Log.v("Bundle", bundle.toString());
 
+        if (bundle != null){
             final Recipe currentRecipe = bundle.getParcelable("Recipe");
             ArrayList<Ingredients> ingredientList = currentRecipe.getIngredients();
 
@@ -44,6 +42,7 @@ public class IngredientFragment extends Fragment {
             }
 
         }
+
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, ingredientArray);
         list.setAdapter(adapter);
 

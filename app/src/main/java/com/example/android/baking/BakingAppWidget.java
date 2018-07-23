@@ -26,7 +26,7 @@ public class BakingAppWidget extends AppWidgetProvider {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String ingredients = sharedPreferences.getString("row", "");
 
-        Log.v("In Widget", ingredients);
+        //Log.v("In Widget", ingredients);
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
         views.setTextViewText(R.id.appwidget_ingredients, ingredients);

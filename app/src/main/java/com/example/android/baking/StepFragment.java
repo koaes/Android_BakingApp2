@@ -1,11 +1,14 @@
 package com.example.android.baking;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,35 +21,31 @@ import com.example.android.baking.model.Ingredients;
 import com.example.android.baking.model.Recipe;
 import com.example.android.baking.model.Steps;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class StepFragment extends Fragment {
 
     ListView stepsView;
     ArrayList<String> stepsArray = new ArrayList<String>();
+    Communicator communicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_steps, container, false);
 
-
+        Log.v("Master", "StepFrag: I am born");
 
         Bundle bundle = getArguments();
         final Recipe currentRecipe = bundle.getParcelable("Recipe");
+
         final ArrayList<Steps> stList = currentRecipe.getSteps();
-
         for (int j = 0; j < stList.size(); j++) {
-
 
             String stepRow = stList.get(j).getShortDescription();
             stepsArray.add(stepRow);
 
-            //Log.v(TAG, "Description: " + stepsList.get(j).getDescription() + "\n" +
-            //"Short: " + stepsList.get(j).getShortDescription() + "\n" +
-            // "Video: " + stepsList.get(j).getVideoURL() + "\n" +
-            //"Thumbnail: " + stepsList.get(j).getThumbnailURL() + "\n"
-            //);
         }
 
         stepsView = view.findViewById(R.id.stepslistview);
@@ -54,17 +53,63 @@ public class StepFragment extends Fragment {
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, stepsArray);
         stepsView.setAdapter(adapter);
 
+
+
         stepsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent(getActivity(), StepInstruction.class);
+                //Intent intent = new Intent(getActivity(), StepInstruction.class);
+
+                //RecipeDetail recipeDetail = new RecipeDetail();
                 Steps currentSteps = stList.get(position);
-                intent.putExtra("Package",currentSteps);
-                getActivity().startActivity(intent);
+                //(recipeDetail(getActivity()).respond(view,currentSteps));
+
+                //(RecipeDetail)getActivity().respond()
+                //intent.putExtra("Package",currentSteps);
+                ///getActivity().startActivity(intent);
+
+                //communicator.respond(currentSteps);
+
+                callRespond(currentSteps);
+
             }
         });
 
         return view;
     }
+
+
+
+    public void setCommunicator(Communicator communicator){
+        this.communicator = communicator;
+    }
+
+
+    public interface Communicator{
+        public void respond (Steps currentSteps);
+    }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        if(context instanceof Communicator){
+            communicator = (Communicator) context;
+        } else {
+            throw new ClassCastException(context.toString()
+            + " must implement Communicator.OnItemSelectedListener");
+        }
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        communicator = null;
+    }
+
+    public void callRespond(Steps currentSteps){
+        communicator.respond(currentSteps);
+    }
+
 }
