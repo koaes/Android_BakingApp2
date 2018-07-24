@@ -14,12 +14,13 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".RecipeDetail" />
-        <activity android:name=".StepInstruction" />
+        <activity android:name=".StepInstruction"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode">
+        </activity>
 
         <receiver android:name=".BakingAppWidget">
             <intent-filter>

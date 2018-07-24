@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#09C"
+    android:background="#3F51B5"
     android:padding="@dimen/widget_margin">
 
     <TextView
@@ -12,7 +12,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_margin="8dp"
-        android:background="#09C"
         android:contentDescription="@string/appwidget_text"
         android:text="@string/appwidget_text"
         android:textColor="#ffffff"
@@ -26,9 +25,20 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_margin="8dp"
-        android:background="#09C"
         android:contentDescription="@string/appwidget_text"
-        android:text="Click to Update"
+        android:text="@string/widget_update"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/appwidget_recipename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/appwidget_text"
         android:textColor="#ffffff"
         android:textSize="16sp"
         android:textStyle="bold|italic" />
@@ -40,9 +50,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_margin="8dp"
-        android:background="#09C"
         android:contentDescription="@string/appwidget_text"
-        android:text="Ingredients"
         android:textColor="#ffffff"
         android:textSize="12sp"
         android:textStyle="bold|italic" />

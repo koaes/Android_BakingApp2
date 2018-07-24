@@ -1,26 +1,23 @@
 package com.example.android.baking;
 
-import android.content.Context;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
-
 import com.example.android.baking.model.Ingredients;
 import com.example.android.baking.model.Recipe;
-
 import java.util.ArrayList;
-
 
 public class IngredientFragment extends Fragment {
 
     ListView list;
     ArrayList<String> ingredientArray = new ArrayList<String>();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -31,7 +28,11 @@ public class IngredientFragment extends Fragment {
         Bundle bundle = getArguments();
         //Log.v("Bundle", bundle.toString());
 
+
         if (bundle != null){
+
+            ImageView recipeImage = (ImageView) view.findViewById(R.id.RecipeImage);
+            recipeImage.setImageResource(bundle.getInt("Image"));
             final Recipe currentRecipe = bundle.getParcelable("Recipe");
             ArrayList<Ingredients> ingredientList = currentRecipe.getIngredients();
 

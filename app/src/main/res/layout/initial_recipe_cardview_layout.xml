@@ -19,7 +19,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="16dp"
-            android:src="@drawable/chickendinner_640x480"
             tools:layout_height="75sp"
             tools:layout_width="75sp"/>
 

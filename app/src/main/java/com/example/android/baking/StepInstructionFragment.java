@@ -1,5 +1,7 @@
 package com.example.android.baking;
 
+import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,8 +15,10 @@ import android.widget.TextView;
 import com.example.android.baking.model.Ingredients;
 import com.example.android.baking.model.Recipe;
 import com.example.android.baking.model.Steps;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -32,17 +36,20 @@ public class StepInstructionFragment extends Fragment{
     private PlayerView playerView;
     Steps current;
     View view;
-    RelativeLayout mView;
+    long position;
     TextView text;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        position = C.TIME_UNSET;
+        if(savedInstanceState!=null){
+            position = savedInstanceState.getLong("position", C.TIME_UNSET);
+        }
+
         view = inflater.inflate(R.layout.fragment_step_instruction, container, false);
         text = (TextView) view.findViewById(R.id.instructions);
         playerView = (PlayerView) view.findViewById(R.id.playerView);
-
-        Log.e("Master", "StepInstructionFrag: I am born");
 
         Bundle bundle = getArguments();
 
@@ -54,18 +61,13 @@ public class StepInstructionFragment extends Fragment{
         return view;
     }
 
-    public void changeData(Steps current){
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
 
-        Uri uri=null;
-        if(current!=null){
-            uri = Uri.parse(current.getVideoURL());
-            text.setText(current.getDescription());}
+        savedInstanceState.putLong("position", position);
 
-        mExoPlayer.setPlayWhenReady(true);
-        MediaSource mediaSource = new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("exoplayer-codelab")).createMediaSource(uri);
-        mExoPlayer.prepare(mediaSource, true, false);
     }
-
 
     @Override
     public void onStart() {
@@ -73,6 +75,34 @@ public class StepInstructionFragment extends Fragment{
         if (Util.SDK_INT > 23) {
             initializePlayer();
         }
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        if(mExoPlayer!=null){
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer=null;
+        }
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(mExoPlayer!=null){
+            position = mExoPlayer.getCurrentPosition();
+            Log.v("Position", Long.toString(position));
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        initializePlayer();
     }
 
     private void initializePlayer() {
@@ -90,9 +120,12 @@ public class StepInstructionFragment extends Fragment{
 
             mExoPlayer.setPlayWhenReady(true);
             MediaSource mediaSource = new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory("exoplayer-codelab")).createMediaSource(uri);
+            if(position!=C.TIME_UNSET){
+                mExoPlayer.seekTo(position);
+            }
+
             mExoPlayer.prepare(mediaSource, true, false);
         }
     }
-
 
 }

@@ -20,19 +20,19 @@ import java.util.ArrayList;
 public class RecipeDetailFragment extends Fragment {
 
     Recipe currentRecipe;
+    int recipeImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
-
-
         Bundle bundle = getArguments();
-        Log.v("Recipe Detail Fragment", bundle.toString());
+        Log.v("RecipeDetailFragBun",bundle.toString());
         if (bundle != null){
             currentRecipe = bundle.getParcelable("Recipe");
+            recipeImage = bundle.getInt("Image");
+            Log.v("DetailFrag", Integer.toString(recipeImage));
         }
-
 
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Ingredient"));
@@ -40,7 +40,7 @@ public class RecipeDetailFragment extends Fragment {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter(getFragmentManager(), tabLayout.getTabCount(), currentRecipe);
+        final PagerAdapter adapter = new PagerAdapter(getFragmentManager(), tabLayout.getTabCount(), currentRecipe, recipeImage);
 
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -62,8 +62,6 @@ public class RecipeDetailFragment extends Fragment {
 
             }
         });
-
-
 
         return view;
 

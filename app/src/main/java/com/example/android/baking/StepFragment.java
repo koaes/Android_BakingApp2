@@ -1,27 +1,16 @@
 package com.example.android.baking;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.example.android.baking.adapters.StepsAdapter;
-import com.example.android.baking.model.Ingredients;
 import com.example.android.baking.model.Recipe;
 import com.example.android.baking.model.Steps;
-
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class StepFragment extends Fragment {
@@ -35,44 +24,26 @@ public class StepFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_steps, container, false);
 
-        Log.v("Master", "StepFrag: I am born");
-
         Bundle bundle = getArguments();
         final Recipe currentRecipe = bundle.getParcelable("Recipe");
 
+        //Get the steps for the recipe for the listview
         final ArrayList<Steps> stList = currentRecipe.getSteps();
         for (int j = 0; j < stList.size(); j++) {
-
             String stepRow = stList.get(j).getShortDescription();
             stepsArray.add(stepRow);
-
         }
 
         stepsView = view.findViewById(R.id.stepslistview);
-
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, stepsArray);
         stepsView.setAdapter(adapter);
-
-
 
         stepsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                //Intent intent = new Intent(getActivity(), StepInstruction.class);
-
-                //RecipeDetail recipeDetail = new RecipeDetail();
                 Steps currentSteps = stList.get(position);
-                //(recipeDetail(getActivity()).respond(view,currentSteps));
-
-                //(RecipeDetail)getActivity().respond()
-                //intent.putExtra("Package",currentSteps);
-                ///getActivity().startActivity(intent);
-
-                //communicator.respond(currentSteps);
-
                 callRespond(currentSteps);
-
             }
         });
 
@@ -80,14 +51,8 @@ public class StepFragment extends Fragment {
     }
 
 
-
-    public void setCommunicator(Communicator communicator){
-        this.communicator = communicator;
-    }
-
-
     public interface Communicator{
-        public void respond (Steps currentSteps);
+        void respond (Steps currentSteps);
     }
 
     @Override

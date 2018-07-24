@@ -11,12 +11,9 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-/**
- * Implementation of App Widget functionality.
- */
 public class BakingAppWidget extends AppWidgetProvider {
 
-    String recipeName;
+
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -25,12 +22,12 @@ public class BakingAppWidget extends AppWidgetProvider {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String ingredients = sharedPreferences.getString("row", "");
+        String receipeName = sharedPreferences.getString("name","");
 
-        //Log.v("In Widget", ingredients);
-
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
+               RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
         views.setTextViewText(R.id.appwidget_ingredients, ingredients);
-        views.setTextViewText(R.id.appwidget_text, "Welcome");
+        views.setTextViewText(R.id.appwidget_recipename,receipeName);
+        views.setTextViewText(R.id.appwidget_text, context.getString(R.string.welcome));
 
         Intent intentUpdate = new Intent(context, BakingAppWidget.class);
         intentUpdate.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
