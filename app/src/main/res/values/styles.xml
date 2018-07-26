@@ -8,13 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="cardView">
+    <style name="regularText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 
-    <style name="cardViewTitle" parent="cardView">
+    <style name="titleText" parent="regularText">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">30sp</item>
     </style>

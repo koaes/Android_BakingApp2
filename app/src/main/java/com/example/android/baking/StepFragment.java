@@ -18,6 +18,7 @@ public class StepFragment extends Fragment {
     ListView stepsView;
     ArrayList<String> stepsArray = new ArrayList<String>();
     Communicator communicator;
+    int stepPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class StepFragment extends Fragment {
 
         Bundle bundle = getArguments();
         final Recipe currentRecipe = bundle.getParcelable("Recipe");
+
 
         //Get the steps for the recipe for the listview
         final ArrayList<Steps> stList = currentRecipe.getSteps();
@@ -42,8 +44,8 @@ public class StepFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Steps currentSteps = stList.get(position);
-                callRespond(currentSteps);
+                stepPosition = position;
+                callRespond(stepPosition);
             }
         });
 
@@ -52,7 +54,7 @@ public class StepFragment extends Fragment {
 
 
     public interface Communicator{
-        void respond (Steps currentSteps);
+        void respond (int stepPosition);
     }
 
     @Override
@@ -73,8 +75,8 @@ public class StepFragment extends Fragment {
         communicator = null;
     }
 
-    public void callRespond(Steps currentSteps){
-        communicator.respond(currentSteps);
+    public void callRespond(int position){
+        communicator.respond(position);
     }
 
 }

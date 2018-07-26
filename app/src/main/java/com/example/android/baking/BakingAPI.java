@@ -1,9 +1,7 @@
 package com.example.android.baking;
 
 import com.example.android.baking.model.Recipe;
-
 import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;

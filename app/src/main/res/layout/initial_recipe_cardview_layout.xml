@@ -23,7 +23,7 @@
             tools:layout_width="75sp"/>
 
         <TextView
-            style="@style/cardViewTitle"
+            style="@style/titleText"
             android:id="@+id/item_name"
             android:layout_toRightOf="@+id/item_photo"
             android:layout_alignParentTop="true"
@@ -32,7 +32,7 @@
             />
 
         <TextView
-            style="@style/cardView"
+            style="@style/regularText"
             android:id="@+id/servingNumber"
             android:layout_toRightOf="@+id/item_photo"
             android:layout_below="@+id/item_name"
@@ -41,7 +41,7 @@
             />
 
         <TextView
-            style="@style/cardView"
+            style="@style/regularText"
             android:id="@+id/servings"
             android:layout_toRightOf="@+id/servingNumber"
             android:layout_below="@+id/item_name"

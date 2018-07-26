@@ -7,24 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 public class BakingAppWidget extends AppWidgetProvider {
 
-
-
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String ingredients = sharedPreferences.getString("row", "");
         String receipeName = sharedPreferences.getString("name","");
 
-               RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
         views.setTextViewText(R.id.appwidget_ingredients, ingredients);
         views.setTextViewText(R.id.appwidget_recipename,receipeName);
         views.setTextViewText(R.id.appwidget_text, context.getString(R.string.welcome));
@@ -54,7 +48,6 @@ public class BakingAppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
 
             updateAppWidget(context, appWidgetManager, appWidgetId);
-            Toast.makeText(context, "Widget has been updated! ", Toast.LENGTH_SHORT).show();
         }
     }
 

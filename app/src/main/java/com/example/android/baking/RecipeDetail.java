@@ -4,23 +4,25 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import com.example.android.baking.model.Recipe;
-import com.example.android.baking.model.Steps;
 
 public class RecipeDetail extends AppCompatActivity implements StepFragment.Communicator{
 
     android.support.v4.app.FragmentManager manager;
     int recipeImage;
+    Recipe currentRecipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
-        if(savedInstanceState == null) {
+        if(savedInstanceState!=null){
 
-            final Recipe currentRecipe = getIntent().getParcelableExtra("Recipe");
+            currentRecipe = savedInstanceState.getParcelable("recipe");
+        } else {
+
+            currentRecipe = getIntent().getParcelableExtra("Recipe");
             recipeImage = getIntent().getIntExtra("Image", 0);
 
             setTitle(currentRecipe.getName());
@@ -46,21 +48,32 @@ public class RecipeDetail extends AppCompatActivity implements StepFragment.Comm
     }
 
     @Override
-    public void respond(Steps currentSteps) {
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putParcelable("recipe", currentRecipe);
+
+    }
+
+    @Override
+    public void respond(int position) {
 
        if((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)) {
             StepInstructionFragment newFragment = new StepInstructionFragment();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("Package", currentSteps);
-            newFragment.setArguments(bundle);
-            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("Package", currentRecipe);
+            bundle.putInt("Position",position);
+            newFragment.setArguments(bundle);
+
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.stepInstruction_fragment_container, newFragment);
             transaction.addToBackStack(null);
             transaction.commit();
         }else{
             Intent intent = new Intent(this, StepInstruction.class);
-            intent.putExtra("Package",currentSteps);
+            intent.putExtra("Package",currentRecipe);
+            intent.putExtra("Position", position);
             startActivity(intent);
         }
 

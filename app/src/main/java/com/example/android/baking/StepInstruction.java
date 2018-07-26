@@ -2,12 +2,14 @@ package com.example.android.baking;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import com.example.android.baking.model.Steps;
+import com.example.android.baking.model.Recipe;
+
 
 public class StepInstruction extends AppCompatActivity {
 
     android.support.v4.app.FragmentManager manager;
-    Steps current;
+    Recipe current;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,10 +22,12 @@ public class StepInstruction extends AppCompatActivity {
 
 
             current = getIntent().getParcelableExtra("Package");
+            position = getIntent().getIntExtra("Position",0);
 
             StepInstructionFragment stepInstructionFragment = new StepInstructionFragment();
             Bundle bundle = new Bundle();
             bundle.putParcelable("Package", current);
+            bundle.putInt("Position", position);
             stepInstructionFragment.setArguments(bundle);
 
             manager = getSupportFragmentManager();
@@ -33,6 +37,8 @@ public class StepInstruction extends AppCompatActivity {
 
         }
     }
+
+
 
 
 }
